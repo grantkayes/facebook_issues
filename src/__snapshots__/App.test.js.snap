@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App app renders 1`] = `
+<div>
+  <center
+    className="d-block mt-3"
+  >
+    <h1
+      className="font-weight-bold text-white"
+    >
+      Newsie
+      <svg
+        aria-hidden="true"
+        className="svg-inline--fa fa-newspaper fa-w-18 fa-lg ml-3"
+        data-icon="newspaper"
+        data-prefix="fas"
+        focusable="false"
+        role="img"
+        style={Object {}}
+        viewBox="0 0 576 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M552 64H88c-13.255 0-24 10.745-24 24v8H24c-13.255 0-24 10.745-24 24v272c0 30.928 25.072 56 56 56h472c26.51 0 48-21.49 48-48V88c0-13.255-10.745-24-24-24zM56 400a8 8 0 0 1-8-8V144h16v248a8 8 0 0 1-8 8zm236-16H140c-6.627 0-12-5.373-12-12v-8c0-6.627 5.373-12 12-12h152c6.627 0 12 5.373 12 12v8c0 6.627-5.373 12-12 12zm208 0H348c-6.627 0-12-5.373-12-12v-8c0-6.627 5.373-12 12-12h152c6.627 0 12 5.373 12 12v8c0 6.627-5.373 12-12 12zm-208-96H140c-6.627 0-12-5.373-12-12v-8c0-6.627 5.373-12 12-12h152c6.627 0 12 5.373 12 12v8c0 6.627-5.373 12-12 12zm208 0H348c-6.627 0-12-5.373-12-12v-8c0-6.627 5.373-12 12-12h152c6.627 0 12 5.373 12 12v8c0 6.627-5.373 12-12 12zm0-96H140c-6.627 0-12-5.373-12-12v-40c0-6.627 5.373-12 12-12h360c6.627 0 12 5.373 12 12v40c0 6.627-5.373 12-12 12z"
+          fill="currentColor"
+          style={Object {}}
+        />
+      </svg>
+    </h1>
+  </center>
+  <center>
+    <p
+      className="text-white"
+    >
+      Your Source for Sports News™
+    </p>
+  </center>
+  <table
+    className="table table-dark"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+        >
+          Article Title
+        </th>
+        <th
+          scope="col"
+        >
+          Source
+        </th>
+        <th
+          scope="col"
+        >
+          Author
+        </th>
+        <th
+          scope="col"
+        >
+          Description
+        </th>
+        <th
+          scope="col"
+        />
+      </tr>
+    </thead>
+    <tbody />
+  </table>
+  <nav
+    className="ml-2"
+  >
+    <ul
+      className="pagination"
+    />
+  </nav>
+</div>
+`;
+
+exports[`Articles articles render 1`] = `
+<table
+  className="table table-dark"
+>
+  <thead>
+    <tr>
+      <th
+        scope="col"
+      >
+        Article Title
+      </th>
+      <th
+        scope="col"
+      >
+        Source
+      </th>
+      <th
+        scope="col"
+      >
+        Author
+      </th>
+      <th
+        scope="col"
+      >
+        Description
+      </th>
+      <th
+        scope="col"
+      />
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a
+          href="https://www.merkur.de/verbraucher/rewe-fund-foto-detail-kundin-ekel-heuschrecke-facebook-kommentare-erkennen-zr-13395011.html"
+          target="_blank"
+        >
+          Rewe-Kundin macht Foto von Bio-Produkten - Kurioses Detail sehen viele spät | Verbraucher - fehmarn24.de
+        </a>
+      </td>
+      <td>
+        Merkur.de
+      </td>
+      <td>
+        -
+      </td>
+      <td>
+        Eine Kundin machte in einer Rewe-Filiale eine ungewöhnliche Entdeckung. Als sie ein Foto davon auf Facebook postete, sorgte dieses für Verwirrung unter den Nutzern.
+      </td>
+      <td>
+        <img
+          alt="article"
+          src="https://www.fehmarn24.de/bilder/2019/12/31/13395011/2145860025-dieses-foto-hat-ein-user-in-einer-rewe-filile-gemacht-haetten-sie-tierische-detail-gleich-gesehen-EnoLPiTZGef.jpg"
+        />
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
