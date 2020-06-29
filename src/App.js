@@ -1,48 +1,119 @@
-import React, { useState, useEffect } from "react"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAtom } from '@fortawesome/free-solid-svg-icons'
-import { TextField } from '@material-ui/core';
+import React, { 
+  useState, 
+  useEffect, 
+  useRef 
+} from "react";
+import { 
+  TextField, 
+  Dialog, 
+  DialogContent,
+  DialogTitle, 
+  Button,
+  List,
+  ListItem,
+  ListItemText
+} from '@material-ui/core';
+import Hotkeys from 'react-hot-keys';
+import Articles from "./components/articles";
+import Pagination from "./components/pagination";
+import { makeStyles } from '@material-ui/core/styles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAtom } from '@fortawesome/free-solid-svg-icons';
 import { sizing } from '@material-ui/system';
-import Articles from "./components/articles"
-import Pagination from "./components/pagination"
-import './App.css'
+import './App.scss';
+import DialogContentText from "@material-ui/core/DialogContentText/DialogContentText";
 
 const App = () => {
 
-  //replace with your own API key or env file
-  const url = `https://api.github.com/repos/facebook/react/issues`
-
-  //React Hooks to set pagination and loaded articles
-  const [issues, setIssues] = useState([])
-  const [issueResults, setIssueResults] = useState({})
+  const url = `https://api.github.com/repos/facebook/react/issues`;
+  const textBox = useRef(null);
+  const resultNode = useRef(null);
+  const [open, setOpen] = React.useState(false);
+  const [issues, setIssues] = useState([]);
+  const [issueResults, setIssueResults] = useState([]);
+  const [nodeIndex, setNodeIndex] = useState([]);
   //const [currentPage, setCurrentPage] = useState(1)
   //const [articlesPerPage] = useState(3)
   //const paginate = (pageNumber) => setCurrentPage(pageNumber)
+
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      width: '100%',
+      maxWidth: 500,
+      backgroundColor: theme.palette.background.paper,
+    },
+  }));
+
+  const classes = useStyles();
 
   useEffect(() => {
     fetch(url)
     .then(res => res.json())
     .then((data) => {
-      console.log(data)
-      setIssues(data)
-    })
-  }, [])
+      console.log(data);
+      setIssues(data);
+    });
+  }, []);
 
-  //get the indices for pagination
+  const keyDown = (keyName, e, handle) => {
+    if (keyName === "enter") {
+      textBox.current.focus();
+      setIssueResults([]);
+    } else if (keyName === "space") {
+      setOpen(!open);
+    } else if (keyName === "j") {
+    }
+  }
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSearch = (query) => {
+    const results = issues.filter( issue => issue.title.includes(query) );
+    console.log(issues[0]);
+    setIssueResults(results);
+  }
+
   //const indexOfLastArticle = currentPage * articlesPerPage
   //const indexOfFirstArticle = indexOfLastArticle - articlesPerPage
   //const currentArticles = articles.slice(indexOfFirstArticle, indexOfLastArticle)
 
   return (
-    <div className="d-flex flex-column align-items-center">
-      <center className="d-block mt-3"><h1 className="font-weight-bold">React Issue Search<FontAwesomeIcon icon={faAtom} size="lg" className="ml-3" spin/></h1></center>
-      <TextField className="mt-5" width="25%" id="standard-basic" label="Issues" onChange={ event => console.log(event.target.value)}/>
-      <ul>
-      {issues.map(issue => (
-        <li key={issue.id}>{issue.title}</li>
-      ))}
-      </ul>
-    </div>
+    <Hotkeys 
+        keyName="enter, j, space" 
+        onKeyDown={ e => keyDown(e) }
+    >
+      <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-row justify-content-between w-100 mt-4">
+          <Button disabled="true" className="text-white mx-auto"> Keyboard Shortcuts </Button>
+          <h1 className="font-weight-bold mx-auto">React Issue Search<FontAwesomeIcon icon={faAtom} size="lg" className="ml-3" spin/></h1>
+          <Button color="secondary" className="mx-auto" href="#" onClick={handleOpen}> Keyboard Shortcuts </Button>
+        </div>
+        <TextField className="mt-5 mb-5 w-50" inputRef={ textBox } id="standard-basic" label="Issues" onChange={ event => handleSearch(event.target.value) }/>
+        <div className={classes.root}>
+          <List component="nav">
+            {issueResults.map( (issue, index) => (
+              <ListItem key={issue.id} className="my-2">
+                <ListItemText primary={issue.title}/>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      </div>
+      <Dialog open={open} onClose={handleClose} selectedValue={"hey"}>
+        <DialogContent>
+          <DialogContentText>
+            <p> 'spacebar' => Open shortcuts </p>
+            <p> 'enter/return' => Focus search </p>
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+    </Hotkeys>
   )
 }
 

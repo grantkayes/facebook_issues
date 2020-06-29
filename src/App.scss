@@ -8,8 +8,15 @@
 }
 
 body {
+  h1, button {
+    color: rgb(255, 73, 73);
+  }
+
+  li:hover, li:focus {
+    background-color:rgba(255, 136, 136, 0.233);
+    transition-duration: 0.5s;
+  }
   background-color: #FFFFFF;
-  color: #006064;
 }
 
 img {
