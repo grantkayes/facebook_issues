@@ -107,7 +107,7 @@ const App = () => {
             'spacebar' => Open shortcuts
           </DialogContentText>
           <DialogContentText>
-            'enter/return' => Focus Search
+            'enter/return' => Focus search
           </DialogContentText>
         </DialogContent>
       </Dialog>
