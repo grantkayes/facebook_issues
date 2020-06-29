@@ -11,11 +11,10 @@ import {
   Button,
   List,
   ListItem,
-  ListItemText
+  ListItemText,
+  Typo
 } from '@material-ui/core';
 import Hotkeys from 'react-hot-keys';
-import Articles from "./components/articles";
-import Pagination from "./components/pagination";
 import { makeStyles } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAtom } from '@fortawesome/free-solid-svg-icons';
@@ -32,10 +31,6 @@ const App = () => {
   const [issues, setIssues] = useState([]);
   const [issueResults, setIssueResults] = useState([]);
   const [nodeIndex, setNodeIndex] = useState([]);
-  //const [currentPage, setCurrentPage] = useState(1)
-  //const [articlesPerPage] = useState(3)
-  //const paginate = (pageNumber) => setCurrentPage(pageNumber)
-
   const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
@@ -75,7 +70,6 @@ const App = () => {
 
   const handleSearch = (query) => {
     const results = issues.filter( issue => issue.title.includes(query) );
-    console.log(issues[0]);
     setIssueResults(results);
   }
 
@@ -90,7 +84,7 @@ const App = () => {
     >
       <div className="d-flex flex-column align-items-center">
         <div className="d-flex flex-row justify-content-between w-100 mt-4">
-          <Button disabled="true" className="text-white mx-auto"> Keyboard Shortcuts </Button>
+          <Button disabled={true} className="text-white mx-auto"> Keyboard Shortcuts </Button>
           <h1 className="font-weight-bold mx-auto">React Issue Search<FontAwesomeIcon icon={faAtom} size="lg" className="ml-3" spin/></h1>
           <Button color="secondary" className="mx-auto" href="#" onClick={handleOpen}> Keyboard Shortcuts </Button>
         </div>
@@ -98,9 +92,11 @@ const App = () => {
         <div className={classes.root}>
           <List component="nav">
             {issueResults.map( (issue, index) => (
-              <ListItem key={issue.id} className="my-2">
-                <ListItemText primary={issue.title}/>
-              </ListItem>
+              <a href={issue.html_url} target="_blank">
+                <ListItem key={issue.id} className="my-2">
+                  <ListItemText primary={issue.title}/>
+                </ListItem>
+              </a>
             ))}
           </List>
         </div>
@@ -108,8 +104,10 @@ const App = () => {
       <Dialog open={open} onClose={handleClose} selectedValue={"hey"}>
         <DialogContent>
           <DialogContentText>
-            <p> 'spacebar' => Open shortcuts </p>
-            <p> 'enter/return' => Focus search </p>
+            'spacebar' => Open shortcuts
+          </DialogContentText>
+          <DialogContentText>
+            'enter/return' => Focus Search
           </DialogContentText>
         </DialogContent>
       </Dialog>
