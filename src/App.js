@@ -7,12 +7,10 @@ import {
   TextField, 
   Dialog, 
   DialogContent,
-  DialogTitle, 
   Button,
   List,
   ListItem,
-  ListItemText,
-  Typo
+  ListItemText
 } from '@material-ui/core';
 import Hotkeys from 'react-hot-keys';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,11 +24,14 @@ const App = () => {
 
   const url = `https://api.github.com/repos/facebook/react/issues`;
   const textBox = useRef(null);
+
+  const [focused, setFocused] = useState(false);
+
   const resultNode = useRef(null);
   const [open, setOpen] = React.useState(false);
   const [issues, setIssues] = useState([]);
   const [issueResults, setIssueResults] = useState([]);
-  const [nodeIndex, setNodeIndex] = useState([]);
+  const [nodeIndex, setNodeIndex] = useState(0);
   const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
@@ -57,6 +58,11 @@ const App = () => {
     } else if (keyName === "space") {
       setOpen(!open);
     } else if (keyName === "j") {
+      const link = document.getElementsByClassName('link')
+      console.log(keyName);
+      setNodeIndex(nodeIndex + 1)
+      link[nodeIndex].focus();
+      console.log(link[nodeIndex]);
     }
   }
 
@@ -90,15 +96,15 @@ const App = () => {
         </div>
         <TextField className="mt-5 mb-5 w-50" inputRef={ textBox } id="standard-basic" label="Issues" onChange={ event => handleSearch(event.target.value) }/>
         <div className={classes.root}>
-          <List component="nav">
+          <ul>
             {issueResults.map( (issue, index) => (
               <a href={issue.html_url} target="_blank">
-                <ListItem key={issue.id} className="my-2">
-                  <ListItemText primary={issue.title}/>
-                </ListItem>
+                <li key={issue.id} className="my-2 link" id={index} onFocus={() => console.log("hey")}>
+                  <p>{issue.title}</p>
+                </li>
               </a>
             ))}
-          </List>
+          </ul>
         </div>
       </div>
       <Dialog open={open} onClose={handleClose} selectedValue={"hey"}>
