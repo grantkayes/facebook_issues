@@ -7,8 +7,16 @@
   pointer-events: none;
 }
 
-li:focus, li:hover {
-  background-color: black;
+.focused {
+  background-color: rgba(255, 136, 136, 0.233);
+}
+
+ul div:hover {
+  background-color: rgba(255, 136, 136, 0.233);
+}
+
+li {
+  list-style-type: none;
 }
 
 body {
@@ -17,7 +25,7 @@ body {
     color: rgb(255, 73, 73);
   }
 
-  li:focus {
+  li:focus, li:hover {
     background-color:rgba(255, 136, 136, 0.233);
     border-radius: 4px;
   }

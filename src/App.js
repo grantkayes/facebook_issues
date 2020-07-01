@@ -7,40 +7,47 @@ import {
   TextField, 
   Dialog, 
   DialogContent,
+  DialogTitle,
   Button,
-  List,
-  ListItem,
-  ListItemText
+  Card,
+  CardContent,
+  Chip,
+  Typography
 } from '@material-ui/core';
-import Hotkeys from 'react-hot-keys';
-import { makeStyles } from '@material-ui/core/styles';
+import './App.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAtom } from '@fortawesome/free-solid-svg-icons';
-import { sizing } from '@material-ui/system';
-import './App.scss';
+import Hotkeys from 'react-hot-keys';
 import DialogContentText from "@material-ui/core/DialogContentText/DialogContentText";
+import { makeStyles } from '@material-ui/core/styles';
+import { node } from "prop-types";
 
 const App = () => {
+  const useStyles = makeStyles({
+    root: {
+      minWidth: 275,
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)',
+    },
+    title: {
+      fontSize: 14,
+    },
+    pos: {
+      marginBottom: 12,
+    },
+  });
 
+  const classes = useStyles();
   const url = `https://api.github.com/repos/facebook/react/issues`;
   const textBox = useRef(null);
-
-  const [focused, setFocused] = useState(false);
-
-  const resultNode = useRef(null);
   const [open, setOpen] = React.useState(false);
   const [issues, setIssues] = useState([]);
   const [issueResults, setIssueResults] = useState([]);
-  const [nodeIndex, setNodeIndex] = useState(0);
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      width: '100%',
-      maxWidth: 500,
-      backgroundColor: theme.palette.background.paper,
-    },
-  }));
-
-  const classes = useStyles();
+  const [nodeIndex, setNodeIndex] = useState(-1);
+  const link = document.getElementsByClassName('link')
 
   useEffect(() => {
     fetch(url)
@@ -51,18 +58,36 @@ const App = () => {
     });
   }, []);
 
-  const keyDown = (keyName, e, handle) => {
-    if (keyName === "enter") {
-      textBox.current.focus();
-      setIssueResults([]);
-    } else if (keyName === "space") {
-      setOpen(!open);
-    } else if (keyName === "j") {
-      const link = document.getElementsByClassName('link')
-      console.log(keyName);
-      setNodeIndex(nodeIndex + 1)
-      link[nodeIndex].focus();
-      console.log(link[nodeIndex]);
+  useEffect(() => {
+    if (nodeIndex === 0) {
+      const link = document.getElementsByClassName('link');
+      link[link.length - 1].classList.remove("focused");
+    }
+  }, [nodeIndex])
+
+  const handleHotkey = (keyName, e, handle) => {
+    switch (keyName) {
+      case 'enter':
+        textBox.current.focus();
+        setIssueResults([]);
+        if (nodeIndex !== 0) {setNodeIndex(0)}
+        break;
+      case 'space':
+        setOpen(!open);
+        break;
+      case 'j':
+        setNodeIndex(nodeIndex + 1);
+        console.log(nodeIndex, keyName)
+        link[nodeIndex].classList.add("focused");
+        link[nodeIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (nodeIndex !== 0) {
+          link[nodeIndex - 1].classList.remove("focused");
+        } else if (nodeIndex >= link.length) {
+          setNodeIndex(0);
+        }
+        break;
+      default:
+        console.log("Error: not a valid hotkey");
     }
   }
 
@@ -77,16 +102,13 @@ const App = () => {
   const handleSearch = (query) => {
     const results = issues.filter( issue => issue.title.includes(query) );
     setIssueResults(results);
+    setNodeIndex(0);
   }
-
-  //const indexOfLastArticle = currentPage * articlesPerPage
-  //const indexOfFirstArticle = indexOfLastArticle - articlesPerPage
-  //const currentArticles = articles.slice(indexOfFirstArticle, indexOfLastArticle)
 
   return (
     <Hotkeys 
         keyName="enter, j, space" 
-        onKeyDown={ e => keyDown(e) }
+        onKeyDown={ e => nodeIndex >= link.length ? setNodeIndex(0) : handleHotkey(e) }
     >
       <div className="d-flex flex-column align-items-center">
         <div className="d-flex flex-row justify-content-between w-100 mt-4">
@@ -95,12 +117,21 @@ const App = () => {
           <Button color="secondary" className="mx-auto" href="#" onClick={handleOpen}> Keyboard Shortcuts </Button>
         </div>
         <TextField className="mt-5 mb-5 w-50" inputRef={ textBox } id="standard-basic" label="Issues" onChange={ event => handleSearch(event.target.value) }/>
-        <div className={classes.root}>
+        <div>
           <ul>
-            {issueResults.map( (issue, index) => (
+            {issueResults.map((issue, index) => (
               <a href={issue.html_url} target="_blank">
-                <li key={issue.id} className="my-2 link" id={index} onFocus={() => console.log("hey")}>
-                  <p>{issue.title}</p>
+                <li key={issue.id} className="my-3">
+                  <Card className={classes.root}>
+                    <CardContent className="link" id={index}>
+                      <Typography className={classes.title} color="textSecondary" gutterBottom>
+                        <strong>Issue Title: </strong>{issue.title}
+                      </Typography>
+                      {issue.labels.map((label) => (
+                        <Chip label={label.name} color="secondary" className="mr-2"/>  
+                      ))}
+                    </CardContent>
+                  </Card>
                 </li>
               </a>
             ))}
@@ -109,11 +140,15 @@ const App = () => {
       </div>
       <Dialog open={open} onClose={handleClose} selectedValue={"hey"}>
         <DialogContent>
+          <DialogTitle>🚀Keyboard Shortcuts 🚀</DialogTitle>
           <DialogContentText>
             'spacebar' => Open shortcuts
           </DialogContentText>
           <DialogContentText>
             'enter/return' => Focus search
+          </DialogContentText>
+          <DialogContentText>
+            'j' => Toggle through results
           </DialogContentText>
         </DialogContent>
       </Dialog>
