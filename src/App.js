@@ -8,18 +8,13 @@ import {
   Dialog, 
   DialogContent,
   DialogTitle,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Typography
+  Button
 } from '@material-ui/core';
 import './App.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAtom } from '@fortawesome/free-solid-svg-icons';
 import Hotkeys from 'react-hot-keys';
 import DialogContentText from "@material-ui/core/DialogContentText/DialogContentText";
-import { makeStyles } from '@material-ui/core/styles';
 import Issues from './components/issues'
 
 const App = () => {
@@ -48,7 +43,7 @@ const App = () => {
     }
   }, [nodeIndex])
 
-  const handleHotkey = (keyName, e, handle) => {
+  const handleHotkey = (keyName) => {
     switch (keyName) {
       case 'enter':
         textBox.current.focus();
