@@ -6,3 +6,5 @@ Notes:
 * Was able to implement 3 keyboard shortcuts: toggle the issue in focus, bring up keyboard shortcuts, and focus on searchbar
 * None of the components are very reusable, so I've kept everything in App.js, knowing that a larger application would need better abstraction
 
+Technology used: Bootstrap, MaterialUI
+
