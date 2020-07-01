@@ -20,27 +20,10 @@ import { faAtom } from '@fortawesome/free-solid-svg-icons';
 import Hotkeys from 'react-hot-keys';
 import DialogContentText from "@material-ui/core/DialogContentText/DialogContentText";
 import { makeStyles } from '@material-ui/core/styles';
-import { node } from "prop-types";
+import Issues from './components/issues'
 
 const App = () => {
-  const useStyles = makeStyles({
-    root: {
-      minWidth: 275,
-    },
-    bullet: {
-      display: 'inline-block',
-      margin: '0 2px',
-      transform: 'scale(0.8)',
-    },
-    title: {
-      fontSize: 14,
-    },
-    pos: {
-      marginBottom: 12,
-    },
-  });
 
-  const classes = useStyles();
   const url = `https://api.github.com/repos/facebook/react/issues`;
   const textBox = useRef(null);
   const [open, setOpen] = React.useState(false);
@@ -119,22 +102,7 @@ const App = () => {
         <TextField className="mt-5 mb-5 w-50" inputRef={ textBox } id="standard-basic" label="Issues" onChange={ event => handleSearch(event.target.value) }/>
         <div>
           <ul>
-            {issueResults.map((issue, index) => (
-              <a href={issue.html_url} target="_blank">
-                <li key={issue.id} className="my-3">
-                  <Card className={classes.root}>
-                    <CardContent className="link" id={index}>
-                      <Typography className={classes.title} color="textSecondary" gutterBottom>
-                        <strong>Issue Title: </strong>{issue.title}
-                      </Typography>
-                      {issue.labels.map((label) => (
-                        <Chip label={label.name} color="secondary" className="mr-2"/>  
-                      ))}
-                    </CardContent>
-                  </Card>
-                </li>
-              </a>
-            ))}
+           <Issues issues={issueResults} /> 
           </ul>
         </div>
       </div>
